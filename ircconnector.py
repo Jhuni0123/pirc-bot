@@ -25,8 +25,14 @@ class IRCConnector:
     def send_msg(self, chan_name, text):
         self._send('PRIVMSG ' + chan_name + ' ' + text)
 
+    def set_topic(self, chan_name, text):
+        self._send('TOPIC ' + chan_name + ' ' + text)
+
     def part_chan(self, chan_name, text = ''):
         self._send('PART ' + chan_name + ' ' + text)
+
+    def quit(self, text):
+        self._send('QUIT ' + text)
 
     def pong(self, server):
         self._send('PONG ' + server)
