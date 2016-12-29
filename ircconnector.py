@@ -35,10 +35,13 @@ class IRCConnector:
         self._sock.send((str + '\n').encode())
 
     def recv_msg(self):
+        prefix = b''
         while True:
-            raw_bytes = self._sock.recv(4096)
+            raw_bytes = self._sock.recv(1024)
             if raw_bytes:
+                raw_bytes = prefix + raw_bytes
                 msg_list = raw_bytes.split(b'\r\n')
+                prefix = msg_list[-1]
                 msg_list.pop()
                 for msg_bytes in msg_list:
                     msg_str = msg_bytes.decode(errors = 'ignore')
