@@ -1,7 +1,7 @@
 import socket, ssl
 import threading
 from queue import Queue
-
+from ircmessage import IRCMessage
 
 class IRCConnector:
     def __init__(self, server, port):
@@ -33,12 +33,14 @@ class IRCConnector:
 
     def recv_msg(self):
         while True:
-            raw_bytes = self._sock.recv(8192)
+            raw_bytes = self._sock.recv(4096)
             if raw_bytes:
                 msg_list = raw_bytes.split(b'\r\n')
                 msg_list.pop()
                 for msg_bytes in msg_list:
-                    self.msg_queue.put(msg_bytes.decode(errors = 'ignore').strip('\r\n'))
+                    msg_str = msg_bytes.decode(errors = 'ignore')
+                    msg = IRCMessage(msg_str)
+                    self.msg_queue.put(msg)
             else:
                 self._sock.close()
                 break
