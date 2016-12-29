@@ -28,6 +28,9 @@ class IRCConnector:
     def part_chan(self, chan_name, text = ''):
         self._send('PART ' + chan_name + ' ' + text)
 
+    def pong(self, server):
+        self._send('PONG ' + server)
+
     def _send(self, str):
         self._sock.send((str + '\n').encode())
 
@@ -40,7 +43,10 @@ class IRCConnector:
                 for msg_bytes in msg_list:
                     msg_str = msg_bytes.decode(errors = 'ignore')
                     msg = IRCMessage(msg_str)
-                    self.msg_queue.put(msg)
+                    if msg['command'] == 'PING':
+                        self.pong(msg['server'])
+                    else:
+                        self.msg_queue.put(msg)
             else:
                 self._sock.close()
                 break
