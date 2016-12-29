@@ -22,11 +22,11 @@ class IRCConnector:
     def join_chan(self, chan_name):
         self._send('JOIN ' + chan_name)
 
-    def send_msg(self, chan_name, text):
-        self._send('PRIVMSG ' + chan_name + ' ' + text)
+    def send_msg(self, target, text):
+        self._send('PRIVMSG ' + target + ' :' + text)
 
     def set_topic(self, chan_name, text):
-        self._send('TOPIC ' + chan_name + ' ' + text)
+        self._send('TOPIC ' + chan_name + ' :' + text)
 
     def part_chan(self, chan_name, text = ''):
         self._send('PART ' + chan_name + ' ' + text)

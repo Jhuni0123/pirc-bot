@@ -12,9 +12,9 @@ class Bot:
 
     def run(self):
         while True:
-            s = self.irc.msg_queue.get()
-            if s:
-                pass
+            msg = self.irc.msg_queue.get()
+            if msg['command'] == 'PRIVMSG':
+                self.irc.send_msg(msg['target'], msg['text'])
 
 if __name__ == '__main__':
     bot = Bot()

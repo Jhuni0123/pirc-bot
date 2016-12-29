@@ -26,7 +26,7 @@ class IRCMessage(dict):
             elif command == 'MODE':
                 self['target'] = params[0]
                 self['mode'] = params[1]
-                if len(param) > 2:
+                if len(params) > 2:
                     self['users'] = params[2:]
             elif command == 'ERROR':
                 self['text'] = text
