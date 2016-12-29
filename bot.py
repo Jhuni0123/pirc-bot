@@ -12,10 +12,9 @@ class Bot:
 
     def run(self):
         while True:
-            if not self.irc.msg_queue.empty():
-                s = self.irc.msg_queue.get()
-                if s:
-                    pass
+            s = self.irc.msg_queue.get()
+            if s:
+                pass
 
 if __name__ == '__main__':
     bot = Bot()
