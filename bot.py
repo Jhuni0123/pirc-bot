@@ -13,7 +13,7 @@ class Bot:
 
     def run(self):
         while True:
-            msg = self.irc.msg_queue.get()
+            msg = self.irc.get_next_msg()
             if msg['command'] == 'PRIVMSG':
                 self.irc.send_msg(msg['target'], msg['text'])
 

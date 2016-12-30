@@ -9,7 +9,7 @@ class IRCConnector:
         s.connect((server, port))
         self._sock = ssl.wrap_socket(s)
 
-        self.msg_queue = Queue()
+        self._msg_queue = Queue()
         _thread = threading.Thread(target = self.recv_msg, daemon = True)
         _thread.start()
 
@@ -43,6 +43,9 @@ class IRCConnector:
     def _send(self, text):
         self._sock.send((text + '\n').encode())
 
+    def get_next_msg(self):
+        return self._msg_queue.get()
+
     def recv_msg(self):
         prefix = b''
         while True:
@@ -58,7 +61,7 @@ class IRCConnector:
                     if msg['command'] == 'PING':
                         self.pong(msg['server'])
                     else:
-                        self.msg_queue.put(msg)
+                        self._msg_queue.put(msg)
             else:
                 self._sock.close()
                 break
