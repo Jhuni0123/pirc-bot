@@ -2,7 +2,7 @@ from ircconnector import IRCConnector
 from config import *
 
 class Bot:
-    def __init__(self):
+    def __init__(self, server, port):
         self.irc = IRCConnector(server, port)
         self.irc.init_user(botname)
         self.irc.set_nick(botnick)
@@ -18,5 +18,5 @@ class Bot:
                 self.irc.send_msg(msg['target'], msg['text'])
 
 if __name__ == '__main__':
-    bot = Bot()
+    bot = Bot(server, port)
     bot.run()

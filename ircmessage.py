@@ -5,7 +5,7 @@ class IRCMessage(dict):
         msg = msg.strip()
         self['command'] = None
         self['sender'] = None
-        match = re.search('^(?::(\S+) )?([a-zA-Z]+|\d\d\d)((?: [^: \t\n\r\f\v]\S*)*)(?: :(.*))?$', msg)
+        match = re.search('^(?::(\S+) )?([a-zA-Z]+|\d\d\d)((?: [^ :\r\n\0][^ \r\n\0]*)*)(?: :(.*))?$', msg)
         if match:
             sender, command, params, text = match.groups()
             params = params.split()
