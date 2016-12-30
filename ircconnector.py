@@ -22,6 +22,9 @@ class IRCConnector:
     def join_chan(self, chan_name):
         self._send('JOIN ' + chan_name)
 
+    def get_names(self, chan_name):
+        self._send('NAMES ' + chan_name)
+
     def send_msg(self, target, text):
         self._send('PRIVMSG ' + target + ' :' + text)
 
@@ -37,8 +40,8 @@ class IRCConnector:
     def pong(self, server):
         self._send('PONG ' + server)
 
-    def _send(self, str):
-        self._sock.send((str + '\n').encode())
+    def _send(self, text):
+        self._sock.send((text + '\n').encode())
 
     def recv_msg(self):
         prefix = b''

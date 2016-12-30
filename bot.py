@@ -9,6 +9,7 @@ class Bot:
         chan = '#jhuni-bot-test'
         self.irc.join_chan(chan)
         self.irc.send_msg(chan, 'Hi')
+        self.irc.get_names(chan)
 
     def run(self):
         while True:

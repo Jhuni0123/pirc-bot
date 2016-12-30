@@ -11,14 +11,9 @@ class IRCMessage(dict):
             params = params.split()
             self['sender'] = sender
             self['command'] = command
-            if command.isnumeric():
-                params = params[1:]
-                if text != None:
-                    params.append(text)
-                self['text'] = ' '.join(params)
-            elif command == 'PING':
+            if command == 'PING':
                 self['server'] = text.strip()
-            elif command in ['NOTICE', 'PRIVMSG']:
+            elif command in ['NOTICE', 'PRIVMSG', 'TOPIC']:
                 self['target'] = params[0]
                 self['text'] = text
             elif command == 'INVITE':
@@ -30,6 +25,17 @@ class IRCMessage(dict):
                     self['users'] = params[2:]
             elif command == 'ERROR':
                 self['text'] = text
+            elif command == '353':
+                self['target'] = params[0]
+                self['mode'] = params[1]
+                self['channel'] = params[2]
+                self['users'] = text.split()
+            elif command.isnumeric():
+                self['target'] = params[0]
+                params = params[1:]
+                if text != None:
+                    params.append(text)
+                self['text'] = ' '.join(params)
         else:
             self['text'] = msg
         print(msg)
