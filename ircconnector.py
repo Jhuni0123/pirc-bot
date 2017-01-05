@@ -13,6 +13,10 @@ class IRCConnector:
         _thread = threading.Thread(target = self.recv_msgs, daemon = True)
         _thread.start()
 
+    def close(self):
+        self.quit('Bye')
+        self._sock.close()
+
     def init_user(self, name):
         self._send('USER ' + (name + ' ') * 3 + ':' + name)
 
