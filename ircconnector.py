@@ -10,7 +10,7 @@ class IRCConnector:
         self._sock = ssl.wrap_socket(s)
 
         self._msg_queue = Queue()
-        _thread = threading.Thread(target = self.recv_msg, daemon = True)
+        _thread = threading.Thread(target = self.recv_msgs, daemon = True)
         _thread.start()
 
     def init_user(self, name):
@@ -41,12 +41,12 @@ class IRCConnector:
         self._send('PONG ' + server)
 
     def _send(self, text):
-        self._sock.send((text + '\n').encode())
+        self._sock.send((text + '\r\n').encode())
 
     def get_next_msg(self):
         return self._msg_queue.get()
 
-    def recv_msg(self):
+    def recv_msgs(self):
         prefix = b''
         while True:
             raw_bytes = self._sock.recv(1024)
